@@ -244,8 +244,10 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
           child: _buildPlayer(
             errorWidget: Container(
               color: Colors.black87,
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 40.0, vertical: 20.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 40.0,
+                vertical: 20.0,
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -299,6 +301,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
         clipBehavior: Clip.none,
         children: [
           Transform.scale(
+            transformHitTests: false,
             scale: controller.value.isFullScreen
                 ? (1 / _aspectRatio * MediaQuery.of(context).size.width) /
                     MediaQuery.of(context).size.height
@@ -364,7 +367,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
                       )
                     : Padding(
                         padding: widget.bottomActions == null
-                            ? const EdgeInsets.all(0.0)
+                            ? const EdgeInsets.all(8.0)
                             : widget.actionsPadding,
                         child: Row(
                           children: widget.bottomActions ??
@@ -377,8 +380,10 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
                                   colors: widget.progressColors,
                                 ),
                                 RemainingDuration(),
-                                const PlaybackSpeedButton(),
-                                FullScreenButton(),
+                                if (controller.flags.showSpeedButton)
+                                  const PlaybackSpeedButton(),
+                                if (controller.flags.showFullscreenButton)
+                                  FullScreenButton(),
                               ],
                         ),
                       ),
@@ -397,7 +402,7 @@ class _YoutubePlayerState extends State<YoutubePlayer> {
                 child: Padding(
                   padding: widget.actionsPadding,
                   child: Row(
-                    children: widget.topActions ?? [Container()],
+                    children: widget.topActions ?? [const SizedBox()],
                   ),
                 ),
               ),
